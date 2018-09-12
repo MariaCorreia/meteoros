@@ -1,12 +1,8 @@
 #ifndef HEADEROBJETOS
 #define HEADEROBJETOS
 
-
 #include <SFML/Graphics.hpp>
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <iostream>
 
 //Entity is the base object of all others in the game, useful for virtual functions
 class Entity : public sf::Transformable, public sf::Drawable{ //transformable so we can store rotation, position and other things
