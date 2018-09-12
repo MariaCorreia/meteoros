@@ -17,11 +17,9 @@ void Pause (int milliseconds) {
 
 
 //-----------------------------------------------------------------------
-House a = House(30,30, 250, 250); //test house
-
+Rocket rocket = Rocket(250, 450, 5);
 void input(sf::RenderWindow &window){
 	sf::Event event;
-	// sf::Vector2i mousePos = sf::Mouse::getPosition(window); aim rockets?
 	while (window.pollEvent(event)){
 			if ( (event.type == sf::Event::Closed) ||
 				((event.type == sf::Event::KeyPressed) &&
@@ -29,15 +27,21 @@ void input(sf::RenderWindow &window){
 				exit(0);
 
 			if((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Space)){
-				a.switchState();
+			}
+
+			if((event.type == sf::Event::MouseButtonPressed) && (event.mouseButton.button == sf::Mouse::Left)){
+				sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+				rocket.flyTo(sf::Vector2f(mousePos.x, mousePos.y));
 			}
 		}
 }
-void show (sf::RenderWindow *window) { //that which will be drawn in the screen
+void show (sf::RenderWindow &window) { //that which will be drawn in the screen
+	window.draw(rocket);
 	//all objects, scores, etc
 }
 
-void update(sf::RenderWindow *window, sf::Time dt){
+void update(sf::RenderWindow &window, sf::Time dt){
+	rocket.run(dt);
 	//.run() all objects on the screen
 }
 
@@ -55,11 +59,10 @@ int main() {
 		Pause(16); //60 updates per second, aka 60fps
 
 		input(window);
-		show (&window);
-		update(&window, now);
+		show (window);
+		update(window, now);
 
-
-		window.draw(a); //test drawing the house
+		
 		window.display(); //plasters everything that has bem .draw()'ed into the screen
 	}
 
