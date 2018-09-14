@@ -53,12 +53,12 @@ void checkColision(){
 
 	//for every meteor in meteor-vector
 		//if (rocket collides with meteor)
-			//meteor-vector.delete(meteor index)
+			//meteor-vector.destroy(meteor index)
 			//rocket.delete()
 		
 		//if (meteor collides with house) {
-			//house.delete();
-			//meteor-vector.delete(meteor index)
+			//house.switchState();
+			//meteor-vector.destroy(meteor index)
 			//scoreboard++;
 		//}
 		

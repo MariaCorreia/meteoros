@@ -48,4 +48,21 @@ class Rocket : public Entity{
 		void flyTo(sf::Vector2f); //flies to target	
 };
 
+class Meteor : public Entity{
+	enum States{COMMON, FAST}; //COMMON is standard straight-flying meteor. FAST is faster meteor.
+	States state;
+	float radius;
+	float angle;
+	float speed; //amount of pixels crossed in a second
+	float x, y; //current position on screen
+	
+	private:
+		void fall(sf::Time);
+	public:
+		Meteor(States, float, float, float); //state, x, y, radius
+		~Meteor();
+		virtual void draw(sf::RenderTarget&, sf::RenderStates) const;
+		virtual void run(sf::Time);
+};
+
 #endif
