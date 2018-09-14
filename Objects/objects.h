@@ -49,12 +49,16 @@ class Rocket : public Entity{
 };
 
 class Meteor : public Entity{
-	enum States{COMMON, FAST}; //COMMON is standard straight-flying meteor. FAST is faster meteor.
+	enum States{COMMON, FAST, CRASHING}; //COMMON is standard straight-flying meteor. FAST is faster meteor. CRASHING is when meteor hits the bottom of the screen.
 	States state;
 	float radius;
 	float angle;
 	float speed; //amount of pixels crossed in a second
 	float x, y; //current position on screen
+	
+	float explosionDuration; //meteors explode upon impact like rockets
+	float explosionMaxDuration; //no minRadius because it doesn't need to be reset.
+	
 	
 	private:
 		void fall(sf::Time);

@@ -12,23 +12,13 @@ MeteorsVector::MeteorsVector(){
 
 }
 
-MeteorsVector::createMeteor(States state){ //creator randomly assigns values for meteor's creator parameters
-	
-	//States state,  float x, float y, float r
-	
-	//if state=COMMON{
-	
-	//generate random radius between 2 and 10 pixels for size variability
-	
-	//generate initial x (pick randomly from a number of defined starter positions available) and initial y (always 0)
-	//define angle of fall depending on which starter position was picked
-	
-	//meteorList[first available spot] = Meteor::Meteor(state, x, y, r);
-	
-	//}
+MeteorsVector::createMeteor(States state){ 
+
+//unecessary, actually. this isn't going to be a class anymore
 }
 
 MeteorsVector::destroy(int index){
+	
 	
 	meteorList[]::~Meteor();
 }
