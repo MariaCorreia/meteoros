@@ -11,7 +11,7 @@ Meteor::Meteor(States state){
 	radius = (rand() % 9) +2; //generate random radius between 2 and 10 pixels for size variability
 	
 	
-	startPosition = (rand()%5); //generates one out of 5 starter positions
+	startPosition = (rand()%10); //generates one out of 5 starter positions
 	target = sf::Vector2f((rand()%500), 0) //creates vector with random location on the bottom of the street as target
 	setPosition((50*startPosition),(0)); //from random startPosition, x has possible values of 0 50 100 150 200 250 300 350 400 450
 	
