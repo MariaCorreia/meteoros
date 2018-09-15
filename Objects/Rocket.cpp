@@ -13,7 +13,7 @@ Rocket::Rocket(float x, float y, float r){ //not quite sure on these arguments, 
 } //Good to have a variable for this should we want to implement any powerups.
 
 Rocket::~Rocket(){ //deconstructors may be useful in the future, will leave it here in preparation for it
-	printf("Rocket deleted\n"); 
+	std::cout << "Rocket deleted\n"; 
 }
 
 void Rocket::draw(sf::RenderTarget &window, sf::RenderStates states) const{
@@ -50,10 +50,12 @@ void Rocket::run(sf::Time dt){
 	}
 }
 
-void Rocket::flyTo(sf::Vector2f t){ //receives a target and sends the rocket on its merry way
-	if(state != ARMED)return;
+bool Rocket::flyTo(sf::Vector2f t){ //receives a target and sends the rocket on its merry way
+	if(state != ARMED)return false; //returns false if unable to launch
+	setPosition(250,430);
 	target = t;
 	state = FLYING;
+	return true; //return true if correctly launched
 }
 
 void Rocket::fly(sf::Time dt){
@@ -73,8 +75,18 @@ void Rocket::explode(sf::Time dt){
 
 	if(explosionDuration > explosionMaxDuration){
 		state = ARMED; //Has finished exploding, restart its cycle once more
-		setPosition(250,450); //also set its position back to the middle. May want a better way of keeping track of these values.
+		setPosition(600,500); //also set its position back to the middle. May want a better way of keeping track of these values.
 		radius = minRadius; //restarts the radius proportions
 		explosionDuration = 0.0; //restarts the timer
 	}
 }
+
+bool Rocket::isColliding(Meteor *m){
+	sf::Vector2f v = m->getPosition()-getPosition();
+	float distance = sqrt((v.x*v.x) + (v.y*v.y));
+
+	if(distance < getRadius() + m->getRadius()) return true;
+	return false;
+}
+
+float Rocket::getRadius(){return radius;}

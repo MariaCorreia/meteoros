@@ -1,18 +1,14 @@
-
 #include "objects.h"
-#include <random>
 
 int startPosition;
 
-Meteor::Meteor(States state){
-	
-	Color brown = sf::Color::Color (23,66,42,255); //defines brown color for use in draw 	
-	this->state = state; //start meteor of the type specified
+Meteor::Meteor(){
+	this->state = rand()%2? COMMON : FAST; //start meteor of the type specified
 	radius = (rand() % 9) +2; //generate random radius between 2 and 10 pixels for size variability
-	
+	minRadius = radius;
 	
 	startPosition = (rand()%10); //generates one out of 5 starter positions
-	target = sf::Vector2f((rand()%500), 0) //creates vector with random location on the bottom of the street as target
+	target = sf::Vector2f(rand()%500, 500); //creates vector with random location on the bottom of the street as target
 	setPosition((50*startPosition),(0)); //from random startPosition, x has possible values of 0 50 100 150 200 250 300 350 400 450
 	
 	explosionDuration = 0.0; //tracks the duration of the explosion
@@ -20,10 +16,10 @@ Meteor::Meteor(States state){
 	
 	switch (state){
 		case COMMON:
-			speed = 150;
+			speed = 150 * (2/radius);
 			break;
 		case FAST:
-			speed = 200;
+			speed = 200 * (2/radius);
 			break;
 			//CRASHING meteors aren't generated at construction.
 		default:
@@ -35,6 +31,16 @@ Meteor::~Meteor(){ //deletes meteors
 	printf("meteor deleted\n"); 
 }
 
+void Meteor::randomize(){
+	radius = 2+rand() % 9; //generate random radius between 2 and 10 pixels for size variability	
+	minRadius = radius;
+	startPosition = (rand()%10); //generates one out of 5 starter positions
+	target = sf::Vector2f((rand()%500), 500); //creates vector with random location on the bottom of the street as target
+	setPosition(50*startPosition,-50);
+
+	explosionDuration = 0.0;
+}
+
 void Meteor::draw(sf::RenderTarget &window, sf::RenderStates states) const{
 	
 	sf::CircleShape circle (radius); //defines the circle with its minimum radius
@@ -42,7 +48,7 @@ void Meteor::draw(sf::RenderTarget &window, sf::RenderStates states) const{
 	circle.setPosition (getPosition()); //so that scaling it expands it equally in all directions
 	switch(state){
 		case COMMON:
-			circle.setFillColor(brown);
+			circle.setFillColor(sf::Color(23,66,42,255));
 			break;
 		case FAST:
 			circle.setFillColor(sf::Color::Red); //sf::Color::White could also work
@@ -76,9 +82,9 @@ void Meteor::run(sf::Time dt){
 	return; 
 }
 
-void Meteor::switchState(){ //purpose of this is for meteors that change behavior in the future
-return;
-}
+// void Meteor::switchState(){ //purpose of this is for meteors that change behavior in the future
+// return;
+// }
 
 void Meteor::fall(sf::Time dt){ //this function makes the meteor go down the screen
 	
@@ -93,11 +99,16 @@ void Meteor::fall(sf::Time dt){ //this function makes the meteor go down the scr
 	
 }
 
-void Meteor::explode(sf::Time dt){ //similar to Rocket::explode
-	radius +=(minRadius*5) * dt.asSeconds(); //increases to five times its original radius each second
+void Meteor::crash(sf::Time dt){ //similar to Rocket::explode
+	radius +=(minRadius*1) * dt.asSeconds(); //increases to five times its original radius each second
 	explosionDuration += dt.asSeconds(); 
 
 	if(explosionDuration > explosionMaxDuration){
-		~Meteor();//once it crashed, this iteration of meteor has served its purpose
+		randomize();
 	}
 }
+
+float Meteor::getRadius(){return radius;}
+
+
+

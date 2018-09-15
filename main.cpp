@@ -15,93 +15,30 @@ void Pause (int milliseconds) {
 	nanosleep(&ts, NULL);
 }
 
+//-----------------------------------------------------------------------
+
+
 
 //-----------------------------------------------------------------------
-Rocket rocket = Rocket(250, 450, 5);
-void input(sf::RenderWindow &window){
-	sf::Event event;
-	while (window.pollEvent(event)){
-			if ( (event.type == sf::Event::Closed) ||
-				((event.type == sf::Event::KeyPressed) &&
-				(event.key.code == sf::Keyboard::Escape)))
-				exit(0);
+int main(){
+	srand(time(NULL));
 
-			if((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Space)){
-			}
-
-			if((event.type == sf::Event::MouseButtonPressed) && (event.mouseButton.button == sf::Mouse::Left)){
-				sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-				rocket.flyTo(sf::Vector2f(mousePos.x, mousePos.y));
-			}
-		}
-}
-void show (sf::RenderWindow &window) { //that which will be drawn in the screen
-	window.draw(rocket);
-	//all objects, scores, etc
-}
-
-void update(sf::RenderWindow &window, sf::Time dt){
-	rocket.run(dt);
-	//.run() all objects on the screen
-}
-
-void checkColision(){
-	
-	//meteor-vector.getMeteorPositions(); 
-	//rocket.getPositions();
-	//house.getPositions();	
-
-	//for every meteor in meteor-vector
-		//if (rocket collides with meteor)
-			//meteor-vector.destroy(meteor index)
-			//rocket.delete()
-		
-		//if (meteor collides with house) {
-			//house.switchState();
-			//meteor-vector.destroy(meteor index)
-			//scoreboard++;
-		//}
-		
-		
-			
-	
-}
-
-//-----------------------------------------------------------------------
-int main() {
 	sf::RenderWindow window(sf::VideoMode(500, 500), "Meteoros");
 
-	//initialization
-	
-	//initializes meteor-vector
-	//initializes houses
-	//initializes rocket launcher
-	
 	sf::Clock clock;
 	sf::Time now = clock.getElapsedTime();
+	GameController game = GameController(20, 5);
+	game.initialize();
 	while (window.isOpen()) {
 		now = clock.restart(); //restarts clock every iteraction,stores time since last restart, aka, dt
 
 		window.clear();
+		Pause(16); //60 updates per second, aka 60fps
 
-		//if (interval between meteors has passed)
-			//meteor-vector.createMeteor();
-		
-		//meteor-vector.update(); //updates meteor position
-		//rocket.update(); //updates rocket position
-		
-		//checkColision(); //checks collision between meteor and rocket, meteor and house, and deletes if necessary
-		// updateScoreboard(); //updates passage of time on scoreboard
-		
-		input(window);
-		show (window);
-		update(window, now);
+		game.gameLoop(window, now);
 
 		
 		window.display(); //plasters everything that has bem .draw()'ed into the screen
-		Pause(16); //60 updates per second, aka 60fps
-
-	
 	}
 
 	return 0;
